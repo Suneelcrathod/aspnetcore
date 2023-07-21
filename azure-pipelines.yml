@@ -1,0 +1,32 @@
+trigger:
+- main
+variables:
+ buildConfiguration: 'Release'
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      pool:
+        vmImage: windows-latest
+      steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: '8.0.x'
+          includePreviewVersions: true
+      - task: NuGetCommand@2
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/*.sln'
+          feedsToUse: 'select'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'restore'
+          projects: '**/*.sln'
+          feedsToUse: 'select'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: '**/*.sln'
+          arguments: '--no-restore --configuration release'
+          
