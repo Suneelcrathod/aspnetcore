@@ -14,16 +14,19 @@ stages:
           packageType: 'sdk'
           version: '8.0.x'
           includePreviewVersions: true
+      - task: NuGetToolInstaller@1
+        inputs:
+          versionSpec: 
       - task: NuGetCommand@2
         inputs:
           command: 'restore'
           restoreSolution: '**/*.sln'
-          feedsToUse: 'select'
+          
       - task: DotNetCoreCLI@2
         inputs:
           command: 'restore'
           projects: '**/*.sln'
-          feedsToUse: 'select'
+          
       - task: DotNetCoreCLI@2
         inputs:
           command: 'build'
